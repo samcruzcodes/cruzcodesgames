@@ -9,13 +9,28 @@ const port = 8080;
 app.use(cors());
 app.use(express.json());
 
-var serviceAccount = require("./cruzcodesgames-c2fe2-firebase-adminsdk-n98uk-fdb181c3b6.json");
+var serviceAccount = require("./key.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 
 const db = admin.firestore();
+
+// Endpoint for game Data
+app.get("/api/games/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const gameDoc = await db.collection("games").doc(id).get();
+    if (!gameDoc.exists) {
+      return res.status(404).json({ error: "Game not found" });
+    }
+    res.json(gameDoc.data());
+  } catch (error) {
+    console.error("Error fetching game data:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 // Endpoint to get games views and likes
 app.get("/api/games", async (req: Request, res: Response) => {
@@ -34,21 +49,6 @@ app.get("/api/games", async (req: Request, res: Response) => {
     res.json(games);
   } catch (error) {
     console.error("Error fetching games:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-// Endpoint for game Data
-app.get("/api/games/:id", async (req: Request, res: Response) => {
-  const { id } = req.params;
-  try {
-    const gameDoc = await db.collection("games").doc(id).get();
-    if (!gameDoc.exists) {
-      return res.status(404).json({ error: "Game not found" });
-    }
-    res.json(gameDoc.data());
-  } catch (error) {
-    console.error("Error fetching game data:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });

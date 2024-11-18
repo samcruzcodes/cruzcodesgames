@@ -1,71 +1,39 @@
-# full-stack
+# CruzCodesGames 🎮
+A Full-Stack Game Portfolio Website
 
-A "standard" yet modern full-stack TypeScript web-application template using React/Vite on the frontend and Express on the backend, bundled with Turborepo.
+# Overview
+CruzCodesGames is a dedicated game portfolio platform inspired by services like itch.io and STEAM, designed to showcase cruzcodes personal game projects. This project aims to centralize game access, enhance player engagement, and provide real-time updates on metrics like likes, ratings, and views by integrating the itch.io API.
 
-## Using this example
+# Goals
+Showcase My Work: A personalized space for my game projects with detailed information for visitors and collaborators.
+User Engagement: Allow players to interact with games, provide feedback, and track scores.
+Data Synchronization: Seamless integration with itch.io to display up-to-date game stats.
+Core Features (MVP)
+1. Homepage
+A dynamic, slider-based homepage to feature games.
+Displays basic game information and preview media.
+2. User Authentication
+User registration and login system.
+Authenticated users can like, rate, and comment on games.
+3. Individual Game Pages
+Dedicated pages for each game with detailed descriptions and media.
+Leaderboards to track top player times.
+4. Itch.io API Integration
+Automatically sync likes, ratings, and views from itch.io.
+Real-time display of engagement metrics.
 
-Run the following command:
+# Technology Stack
+Frontend
+React for a dynamic and user-friendly interface.
+HTML/CSS for responsive and visually appealing design.
+Backend
+Express.js for efficient API management.
+Firebase for user authentication and data storage.
+Database
+Firebase for real-time updates and reliable storage.
+Deployment
+Hosted on Vercel or Firebase Hosting for easy accessibility.
 
-```sh
-pnpm install
-pnpm build
-pnpm dev
-```
+# License
+This project is licensed under the MIT License. See the LICENSE file for more details.
 
-The server will be available at `http://localhost:8080`.
-The client will be available at `http://localhost:5173`.
-
-## What's inside?
-
--   [TypeScript](https://www.typescriptlang.org/) for static type checking
--   [Turborepo](https://turbo.build/repo) for monorepo management
-
-On the frontend:
-
--   [Vite](https://vitejs.dev/) for frontend development
--   [React](https://reactjs.org/) for frontend UI
--   [React Router](https://reactrouter.com/) for frontend routing
--   [Mantine](https://mantine.dev/) for frontend UI components
--   [Lucide](https://lucide.dev/) for frontend icons
-
-On the backend:
-
--   [Express](https://expressjs.com/) for backend development
-
-## Making Edits
-
-To edit the frontend, `cd` into `frontend` and make changes as you would normally in a standard React app.
-
-To edit the backend, `cd` into `backend` and make changes as you would normally in a standard Express server.
-
-To edit types that are _shared_ between the frontend and backend, `cd` into `lib/types`, and put your types in `index.ts`. You can put miscellaneous types here that you want to share between the frontend and backend in the `src` directory within. Don't forget to export them!
-
-## Deploying
-
-We recommend using [Fly.io](https://fly.io/) for deployment.
-
-As a fair warning, this will require a credit card. However, you shouldn't get charged for it, as Fly.io has a generous free tier.
-
-1. Make an account on [Fly.io](https://fly.io/)
-
-2. Install [flyctl](https://fly.io/docs/hands-on/install-flyctl/)
-
-3. Run `flyctl auth login`
-
-    You may be prompted to add a credit card at this stage. We recommend doing so in order to proceed.
-
-4. Run `flyctl launch`
-
-    If asked to tweak settings, answer 'N' unless you know what you're doing.
-
-    After launching, the terminal should print the URL at which your app is publicly available.
-
-5. Modify the `BACKEND_BASE_PATH` variable.
-
-    If you haven't already, go to `/frontend/src/constants/Navigation.tsx` and read the `TODO` instructions left there. Then, make the changes accordingly.
-
-6. Run `flyctl deploy` to re-deploy changes to your app to the same URL.
-
-### Debugging
-
-If your deployment launch name gets too long. Try going into your (fly.io)[https://fly.io] dashboard and go to `Apps` then delete any current apps you may currently have. Then go back to the console and run `flyctl launch` when asked "Do you want to tweak these settings before proceeding?" type "y" and then change the name to your desired name.

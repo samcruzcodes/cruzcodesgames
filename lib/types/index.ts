@@ -15,6 +15,9 @@ export type Game = {
     itchIoUrl: string; 
     likes: number;
     views: number;
+    height: string;
+    width: string;
+    margin: string;
 };
 
 export type Comment = {

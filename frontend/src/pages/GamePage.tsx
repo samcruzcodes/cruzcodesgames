@@ -31,20 +31,6 @@ const GamePage = () => {
     fetchGame();
   }, [id]);
 
-  useEffect(() => {
-    if (game && id) {
-      const script = document.createElement('script');
-      script.src = `/public/games/${id}/script.js`;
-      script.async = true;
-
-      document.body.appendChild(script);
-
-      return () => {
-        document.body.removeChild(script);
-      };
-    }
-  }, [id, game]);
-
   if (loading) {
     return <div id="error-page"><h1>Loading...</h1></div>;
   }
@@ -56,26 +42,19 @@ const GamePage = () => {
   return (
     <div style={styles.gamePage}>
       <h1 style={styles.title}>{game.title}</h1>
-      <div id="game-container" style={styles.gameContainer}></div>
+        <iframe src={game.itchIoUrl} width={game.width} height={game.height} style={{ 
+    ...styles.gameContainer, 
+    margin: game.margin || '20px' 
+  }} />
       <div style={styles.gameDetails}>
         <p><strong>Description:</strong> {game.description}</p>
         <p><strong>Views:</strong> {game.views}</p>
-        {game.itchIoUrl && (
-          <p>
-            <a 
-              href={game.itchIoUrl} 
-              target="_blank" 
-              style={styles.itchIoLink}
-            >
-              Play on itch.io
-            </a>
-          </p>
-        )}
         <div style={styles.commentsSection}>
           <h3>Comments</h3>
           <p>No comments yet. Be the first to comment!</p>
         </div>
       </div>
+
     </div>
   );
 };
@@ -89,13 +68,6 @@ const styles = {
     color: 'var(--primary-color)',
     fontSize: '2rem',
     marginBottom: '20px',
-  },
-  gameContainer: {
-    width: '100%',
-    height: '60vh',
-    border: '1px solid var(--subtle-accent)',
-    marginTop: '20px',
-    backgroundColor: '#f9f9f9',
   },
   gameDetails: {
     marginTop: '20px',
@@ -116,6 +88,9 @@ const styles = {
     textDecoration: 'none',
     borderRadius: '4px',
     marginTop: '10px',
+  },
+  gameContainer: {
+    transform: 'scale(0.7)',
   },
 };
 

@@ -33,7 +33,7 @@ const useStyles = createStyles((theme) => ({
     },
 
     logo: {
-        height: 28,
+        height: 45,
         width: "auto",
         cursor: "pointer",
     },

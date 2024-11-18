@@ -1,9 +1,34 @@
 import React, { useState } from "react";
 import { Game } from "../../../lib/types/index";
 import { Link } from "react-router-dom";
+import { createStyles } from "@mantine/core"; // Import createStyles from Mantine
 
-const GameCard = ({ title, description, thumbnailUrl, views, likes, id }: Game) => {
+const useStyles = createStyles((theme) => ({
+  link: {
+    color: "var(--subtle-accent)",
+    textDecoration: "none",
+    fontWeight: "500",
+    padding: "8px 12px",
+    borderRadius: "4px",
+    transition: "background-color 0.2s ease",
+  },
+  linkActive: {
+    color: "var(--accent-color)",
+    fontWeight: "bold",
+  },
+}));
+
+const GameCard = ({
+  title,
+  description,
+  thumbnailUrl,
+  views,
+  likes,
+  id,
+}: Game) => {
   const [currentViews, setCurrentViews] = useState(views);
+  const [active, setActive] = useState(false);
+  const { classes, cx } = useStyles();
 
   const handleViewGame = async () => {
     try {
@@ -20,10 +45,18 @@ const GameCard = ({ title, description, thumbnailUrl, views, likes, id }: Game) 
       }
 
       const data = await response.json();
-      setCurrentViews(data.newViews); 
+      setCurrentViews(data.newViews);
     } catch (error) {
       console.error("Error views:", error);
     }
+  };
+
+  const handleMouseEnter = () => {
+    setActive(true);
+  };
+
+  const handleMouseLeave = () => {
+    setActive(false);
   };
 
   return (
@@ -35,12 +68,14 @@ const GameCard = ({ title, description, thumbnailUrl, views, likes, id }: Game) 
         <h3 style={styles.title}>{title}</h3>
         <p style={styles.description}>{description}</p>
         <p>
-          <strong>Views:</strong> {currentViews} <strong>  Likes:</strong> {currentViews}
+          <strong>Views:</strong> {currentViews} <strong>Likes:</strong> {likes}
         </p>
         <Link
           to={`../../public/games/${id}`}
-          style={styles.link}
+          className={cx(classes.link, { [classes.linkActive]: active })}
           onClick={handleViewGame}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
           View Game
         </Link>
@@ -95,14 +130,6 @@ const styles = {
     color: "white",
     border: "none",
     cursor: "pointer",
-  },
-  link: {
-    color: "var(--subtle-accent)",
-    textDecoration: "none",
-    fontWeight: "500",
-    padding: "8px 12px",
-    borderRadius: "4px",
-    transition: "background-color 0.2s ease",
   },
 };
 

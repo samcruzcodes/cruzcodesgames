@@ -8,14 +8,20 @@ const staticGames: Omit<Game, "likes" | "views">[] = [
     title: "Sandcastle Tycoon",
     description: "Build, Defend, and Thrive: Master the Shores in Sandcastle Tycoon!",
     thumbnailUrl: sandyLogo,
-    itchIoUrl: "https://cruzcodes.itch.io/sandcastle-tycoon",
+    itchIoUrl: "https://itch.io/embed-upload/11755159?color=033438",
+    height: "1020px",
+    width: "700px",
+    margin: "-10rem 0.5rem -10rem 0"  
   },
   {
     id: "cheezy",
     title: "Cheezy Conundrum",
     description: "Guide Timmy and Tommy out this Cheezy Conundrum.",
     thumbnailUrl: cheezyLogo,
-    itchIoUrl: "https://cruzcodes.itch.io/cheezy-conundrum",
+    itchIoUrl: "https://itch.io/embed-upload/11723855?color=7e7e7e",
+    height: "770px",
+    width: "750px",
+    margin: "-7.5rem 0.5rem -9rem 0"  
   },
 ];
 
