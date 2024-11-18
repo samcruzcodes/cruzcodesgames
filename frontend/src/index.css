@@ -1,0 +1,198 @@
+:root {
+    --background-color: #1f2a36 ;
+    --primary-color: #ffffff;
+    --background-primary-mix: #2c3e50;;
+    --text-color: #ecf0f1;
+    --subtle-accent: #95a5a6;
+    --highlight-color: #f39c12;
+    --secondary-color: #8e44ad;
+    --accent-color: #27ae60;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+@font-face {
+    font-family: 'SpaceMono';
+    src: url("../src/assets/SpaceMono-Bold.ttf");
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    line-height: 1.5;
+    background-color: var(--background-color) !important;
+    color: var(--text-color) !important;
+    font-family: 'SpaceMono', -apple-system, BlinkMacSystemFont, "Segoe UI", 
+        "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", 
+        "Helvetica Neue", sans-serif;
+}
+
+textarea,
+input,
+button {
+    font-size: 1rem;
+    font-family: inherit;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.2), 0 1px 2px hsla(0, 0%, 0%, 0.2);
+    background-color: white;
+    line-height: 1.5;
+    margin: 0;
+}
+
+button {
+    color: #3992ff;
+    font-weight: 500;
+}
+
+textarea:hover,
+input:hover,
+button:hover {
+    box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.6), 0 1px 2px hsla(0, 0%, 0%, 0.2);
+}
+
+button:active {
+    box-shadow: 0 0px 1px hsla(0, 0%, 0%, 0.4);
+    transform: translateY(1px);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+#root {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+#sidebar {
+    width: 22rem;
+    background-color: #f7f7f7;
+    border-right: solid 1px #e3e3e3;
+    display: flex;
+    flex-direction: column;
+}
+
+#sidebar > * {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+#sidebar h1 {
+    font-size: 1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 1rem 2rem;
+    border-top: 1px solid #e3e3e3;
+    order: 1;
+    line-height: 1;
+}
+
+#sidebar > div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e3e3e3;
+}
+
+#sidebar nav {
+    flex: 1;
+    overflow: auto;
+    padding-top: 1rem;
+}
+
+#sidebar nav a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    white-space: pre;
+    padding: 0.5rem;
+    border-radius: 8px;
+    color: inherit;
+    text-decoration: none;
+    gap: 1rem;
+}
+
+#sidebar nav a:hover {
+    background: #e3e3e3;
+}
+
+#sidebar nav a.active {
+    background: hsl(224, 98%, 58%);
+    color: white;
+}
+
+#detail {
+    flex: 1;
+    padding: 2rem 4rem;
+    width: 100%;
+}
+
+#detail.loading {
+    opacity: 0.25;
+    transition: opacity 200ms;
+    transition-delay: 200ms;
+}
+
+#error-page {
+    display: flex;       
+    flex-direction: column;           
+    justify-content: center;        
+    align-items: center;                     
+    text-align: center;             
+    padding: 2rem;
+}
+
+#error-page h1 {
+    font-size: 3rem;
+    margin: 1rem 0;
+    color: var(--highlight-color) !important;
+}
+
+#error-page p {
+    margin: 1rem 0;
+    font-size: 1.25rem;
+    color: var(--subtle-accent) !important;
+}
+
+#error-page a {
+    display: inline-block;
+    margin-top: 1.5rem;
+    text-decoration: none;
+    color: var(--primary-color) !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--primary-color) !important;
+    border-radius: 8px;
+}
+
+#error-page a:hover {
+    background-color: var(--primary-color) !important;
+    color: var(--text-color) !important;
+}
+
