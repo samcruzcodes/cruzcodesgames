@@ -1,6 +1,5 @@
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
-import admin from "firebase-admin";
 import { User } from "../lib/types/index";
 import { addUser, getUser, updateUser, deleteUser  } from "./user.controller";
 
@@ -10,6 +9,9 @@ const port = 8080;
 
 app.use(cors());
 app.use(express.json());
+
+
+import admin from "firebase-admin";
 
 var serviceAccount = require("./key.json");
 
