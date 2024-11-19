@@ -2,7 +2,7 @@
 import { User } from "../lib/types/index";
 import { db } from "./server";
 
-export const addUser = async (id: String, user: User) => {
+export const addUser = async (id: string, user: User) => {
   const userRef = db.collection("users").doc(id);
   return await userRef.set(user);
 };

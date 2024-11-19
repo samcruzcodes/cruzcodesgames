@@ -21,7 +21,7 @@ const staticGames: Omit<Game, "likes" | "views">[] = [
     itchIoUrl: "https://itch.io/embed-upload/11723855?color=7e7e7e",
     height: "770px",
     width: "750px",
-    margin: "-7.5rem 0.5rem -9rem 0"  
+    margin: "-7.5rem 0.5rem -8.5rem 0"  
   },
 ];
 

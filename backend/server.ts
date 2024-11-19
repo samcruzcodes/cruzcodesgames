@@ -80,33 +80,10 @@ app.post("/api/games/:id/increment-views", async (req: Request, res: Response) =
   }
 });
 
-// Endpoint to add likes
-app.put("/api/games/:id/likes", async (req: Request, res: Response) => {
+// Endpoint to update likes
+app.patch("/api/games/:id/likes", async (req: Request, res: Response) => {
   const { id } = req.params;
-
-  try {
-    const gameRef = db.collection("games").doc(id);
-    const gameDoc = await gameRef.get();
-
-    if (!gameDoc.exists) {
-      return res.status(404).json({ error: "Game not found" });
-    }
-
-    const currentLikes = gameDoc.data()?.likes || 0;
-    const newLikes = currentLikes + 1;
-
-    await gameRef.update({ likes: newLikes });
-
-    res.json({ success: true, newLikes });
-  } catch (error) {
-    console.error("Error updating likes:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-// Endpoint to delete like
-app.delete("/api/games/:id/likes", async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const { increment } = req.body; 
 
   try {
     const gameRef = db.collection("games").doc(id);
@@ -118,11 +95,15 @@ app.delete("/api/games/:id/likes", async (req: Request, res: Response) => {
 
     const currentLikes = gameDoc.data()?.likes || 0;
 
-    if (currentLikes === 0) {
+    let newLikes = currentLikes;
+    if (increment) {
+      newLikes += 1; 
+    } else if (currentLikes > 0) {
+      newLikes -= 1; 
+    } else {
       return res.status(400).json({ error: "Likes cannot be negative." });
     }
 
-    const newLikes = currentLikes - 1;
     await gameRef.update({ likes: newLikes });
 
     res.json({ success: true, newLikes });
@@ -132,9 +113,9 @@ app.delete("/api/games/:id/likes", async (req: Request, res: Response) => {
   }
 });
 
+
 // Endpoint to add user
 app.post("/api/users/:id", async (req: Request, res: Response) => {
-  console.log("[POST] entering '/users/:id' endpoint");
   const { id } = req.params;
   const { username, email, createdAt } = req.body;
 
@@ -159,7 +140,6 @@ app.post("/api/users/:id", async (req: Request, res: Response) => {
 
 // Endpoint to get user
 app.get("/api/users/:id", async (req: Request, res: Response) => {
-  console.log("[GET] entering '/users/:id' endpoint");
   const { id } = req.params;
 
   try {
@@ -177,7 +157,6 @@ app.get("/api/users/:id", async (req: Request, res: Response) => {
 
 // Endpoint to update user
 app.put("/api/users/:id", async (req: Request, res: Response) => {
-  console.log("[PUT] entering '/users/:id' endpoint");
   const { id } = req.params;
   const updates = req.body;
 
