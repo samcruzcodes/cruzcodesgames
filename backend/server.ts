@@ -1,6 +1,8 @@
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import admin from "firebase-admin";
+import { User } from "../lib/types/index";
+import { addUser, getUser, updateUser, deleteUser  } from "./user.controller";
 
 const app: Express = express();
 const hostname = "0.0.0.0";
@@ -16,6 +18,8 @@ admin.initializeApp({
 });
 
 const db = admin.firestore();
+
+export { db };
 
 // Endpoint for game Data
 app.get("/api/games/:id", async (req: Request, res: Response) => {
@@ -98,8 +102,7 @@ app.put("/api/games/:id/likes", async (req: Request, res: Response) => {
   }
 });
 
-
-// Endpoint to delete likes
+// Endpoint to delete like
 app.delete("/api/games/:id/likes", async (req: Request, res: Response) => {
   const { id } = req.params;
 
@@ -127,6 +130,65 @@ app.delete("/api/games/:id/likes", async (req: Request, res: Response) => {
   }
 });
 
+// Endpoint to add user
+app.post("/api/users/:id", async (req: Request, res: Response) => {
+  console.log("[POST] entering '/users/:id' endpoint");
+  const { id } = req.params;
+  const { username, email, createdAt } = req.body;
+
+  const user: User = {
+    id,
+    username,
+    email,
+    createdAt,
+  };
+
+  try {
+    await addUser(id, user);
+    res.status(200).json({
+      message: `SUCCESS: added user with id: ${id} to the user collection in Firestore`,
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: `ERROR: an error occurred in the /api/users/:id endpoint: ${err}`,
+    });
+  }
+});
+
+// Endpoint to get user
+app.get("/api/users/:id", async (req: Request, res: Response) => {
+  console.log("[GET] entering '/users/:id' endpoint");
+  const { id } = req.params;
+
+  try {
+    const user = await getUser(id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({
+      error: `ERROR: an error occurred in the /api/users/:id endpoint: ${err}`,
+    });
+  }
+});
+
+// Endpoint to update user
+app.put("/api/users/:id", async (req: Request, res: Response) => {
+  console.log("[PUT] entering '/users/:id' endpoint");
+  const { id } = req.params;
+  const updates = req.body;
+
+  try {
+    await updateUser(id, updates);
+    const updatedUser = await getUser(id);
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    res.status(500).json({
+      error: `ERROR: an error occurred while updating user: ${err}`,
+    });
+  }
+});
 
 app.listen(port, hostname, () => {
   console.log(`Listening`);
