@@ -1,4 +1,6 @@
-const Profile = ({ user }: { user: any }) => {
+import { User } from "@full-stack/types";
+
+const Profile = ({ user }: { user: User }) => {
     if (!user) {
         return (
             <center>

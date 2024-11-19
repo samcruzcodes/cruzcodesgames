@@ -1,22 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Game } from "../../../lib/types/index";
 import { Link } from "react-router-dom";
-import { createStyles } from "@mantine/core"; // Import createStyles from Mantine
-
-const useStyles = createStyles((theme) => ({
-  link: {
-    color: "var(--subtle-accent)",
-    textDecoration: "none",
-    fontWeight: "500",
-    padding: "8px 12px",
-    borderRadius: "4px",
-    transition: "background-color 0.2s ease",
-  },
-  linkActive: {
-    color: "var(--accent-color)",
-    fontWeight: "bold",
-  },
-}));
 
 const GameCard = ({
   title,
@@ -28,7 +12,6 @@ const GameCard = ({
 }: Game) => {
   const [currentViews, setCurrentViews] = useState(views);
   const [active, setActive] = useState(false);
-  const { classes, cx } = useStyles();
 
   const handleViewGame = async () => {
     try {
@@ -72,7 +55,11 @@ const GameCard = ({
         </p>
         <Link
           to={`../../public/games/${id}`}
-          className={cx(classes.link, { [classes.linkActive]: active })}
+          style={{
+            ...styles.link,
+            color: active ? "var(--accent-color)" : "var(--subtle-accent)",
+            fontWeight: active ? "bold" : "500",
+          }}
           onClick={handleViewGame}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -89,13 +76,13 @@ const styles = {
     border: `1px solid var(--subtle-accent)`,
     borderRadius: "8px",
     padding: "10px",
-    textAlign: "center",
+    textAlign: "center" as const,
     width: "400px",
     height: "450px",
     margin: "20px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column" as const,
     justifyContent: "space-around",
     backgroundColor: "var(--background-primary-mix)",
   },
@@ -108,7 +95,7 @@ const styles = {
   image: {
     maxWidth: "100%",
     maxHeight: "100%",
-    objectFit: "cover",
+    objectFit: "cover" as const,
     borderRadius: "8px",
   },
   title: {
@@ -122,14 +109,11 @@ const styles = {
     fontSize: "1rem",
     marginBottom: "0.5rem",
   },
-  button: {
-    padding: "10px 15px",
-    fontSize: "1rem",
-    borderRadius: "5px",
-    backgroundColor: "var(--subtle-accent)",
-    color: "white",
-    border: "none",
-    cursor: "pointer",
+  link: {
+    textDecoration: "none",
+    padding: "8px 12px",
+    borderRadius: "4px",
+    transition: "color 0.2s ease",
   },
 };
 
