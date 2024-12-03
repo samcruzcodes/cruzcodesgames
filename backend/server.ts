@@ -2,6 +2,15 @@ import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import { User } from "../lib/types/index";
 import { addUser, getUser, updateUser, deleteUser  } from "./user.controller";
+import { 
+  doCreateUserWithEmailAndPassword,
+  doSignInWithEmailAndPassword,
+  doSignInWithGoogle,
+  doSignOut,
+  doPasswordReset,
+  doSendEmailVerification
+} from "./auth.controller";
+
 
 const app: Express = express();
 const hostname = "0.0.0.0";
@@ -113,7 +122,6 @@ app.patch("/api/games/:id/likes", async (req: Request, res: Response) => {
   }
 });
 
-
 // Endpoint to add user
 app.post("/api/users/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -171,6 +179,69 @@ app.put("/api/users/:id", async (req: Request, res: Response) => {
   }
 });
 
-app.listen(port, hostname, () => {
-  console.log(`Listening`);
+app.post("/api/auth/signup", async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  try {
+    const userCredential = await doCreateUserWithEmailAndPassword(email, password);
+    res.status(201).json({
+      message: "User created successfully",
+      user: userCredential.user
+    });
+  } catch (err) {
+    res.status(400).json({ error: `ERROR: an error occurred while singing up: ${err}`,});
+  }
 });
+
+app.post("/api/auth/signin", async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  try {
+    const userCredential = await doSignInWithEmailAndPassword(email, password);
+    res.status(200).json({
+      message: "Signed in successfully",
+      user: userCredential.user
+    });
+  } catch (err) {
+    res.status(400).json({error: `ERROR: an error occurred while signing in: ${err}`,});
+  }
+});
+
+app.post("/api/auth/google", async (req: Request, res: Response) => {
+  try {
+    const result = await doSignInWithGoogle();
+    res.status(200).json({
+      message: "Google sign-in successful",
+      user: result.user
+    });
+  } catch (err) {
+    res.status(400).json({error: `ERROR: an error occurred while signing in with google: ${err}`,});
+  }
+});
+
+app.post("/api/auth/signout", async (req: Request, res: Response) => {
+  try {
+    await doSignOut();
+    res.status(200).json({ message: "Signed out successfully" });
+  } catch (err) {
+    res.status(400).json({ error: `ERROR: an error occurred while signing out: ${err}`,});
+  }
+});
+
+app.post("/api/auth/password-reset", async (req: Request, res: Response) => {
+  const { email } = req.body;
+  try {
+    await doPasswordReset(email);
+    res.status(200).json({ message: "Password reset email sent" });
+  } catch (err) {
+    res.status(400).json({ error: `ERROR: an error occurred while resetting the password: ${err}`, });
+  }
+});
+
+app.post("/api/auth/verify-email", async (req: Request, res: Response) => {
+  try {
+    await doSendEmailVerification();
+    res.status(200).json({ message: "Verification email sent" });
+  } catch (err) {
+    res.status(400).json({ error: `ERROR: an error occurred while verifying the email: ${err}`,});
+  }
+});
+
