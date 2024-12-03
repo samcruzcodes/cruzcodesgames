@@ -179,6 +179,7 @@ app.put("/api/users/:id", async (req: Request, res: Response) => {
   }
 });
 
+// Endpoint to signup
 app.post("/api/auth/signup", async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
@@ -192,6 +193,7 @@ app.post("/api/auth/signup", async (req: Request, res: Response) => {
   }
 });
 
+// Endpoint to signin
 app.post("/api/auth/signin", async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
@@ -205,6 +207,7 @@ app.post("/api/auth/signin", async (req: Request, res: Response) => {
   }
 });
 
+// Endpoint to signin with Google
 app.post("/api/auth/google", async (req: Request, res: Response) => {
   try {
     const result = await doSignInWithGoogle();
@@ -217,6 +220,7 @@ app.post("/api/auth/google", async (req: Request, res: Response) => {
   }
 });
 
+// Endpoint to signout
 app.post("/api/auth/signout", async (req: Request, res: Response) => {
   try {
     await doSignOut();
@@ -226,6 +230,7 @@ app.post("/api/auth/signout", async (req: Request, res: Response) => {
   }
 });
 
+// Endpoint to reset password
 app.post("/api/auth/password-reset", async (req: Request, res: Response) => {
   const { email } = req.body;
   try {
@@ -236,6 +241,7 @@ app.post("/api/auth/password-reset", async (req: Request, res: Response) => {
   }
 });
 
+// Endpoint to verify email
 app.post("/api/auth/verify-email", async (req: Request, res: Response) => {
   try {
     await doSendEmailVerification();

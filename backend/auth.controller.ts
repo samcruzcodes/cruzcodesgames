@@ -1,4 +1,4 @@
-import { auth } from "./firebase";
+import { auth } from "../frontend/src/firebase";
 import { 
   createUserWithEmailAndPassword, 
   GoogleAuthProvider, 

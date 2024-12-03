@@ -7,6 +7,12 @@ export type User = {
     createdAt: string;
     };
 
+export type AuthContextType = {
+    currentUser:User | null;
+    userLoggedIn: boolean;
+    loading: boolean;
+};
+
 export type Game = {
     id: string; 
     title: string;

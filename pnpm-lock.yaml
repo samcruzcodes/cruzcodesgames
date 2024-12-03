@@ -11,6 +11,9 @@ importers:
       dotenv:
         specifier: ^16.4.6
         version: 16.4.6
+      firebase:
+        specifier: ^9.17.2
+        version: 9.17.2
     devDependencies:
       eslint:
         specifier: ^8.48.0
