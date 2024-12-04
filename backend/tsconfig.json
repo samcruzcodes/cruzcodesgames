@@ -1,11 +1,15 @@
 {
     "compilerOptions": {
-        "target": "ES2020",
-        "module": "CommonJS",
-        "strict": true,
-        "declaration": true,
-        "outDir": "./dist",
-        "esModuleInterop": true
+      "target": "es2017",
+      "module": "commonjs",
+      "outDir": "./dist",
+      "rootDir": ".",
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "moduleResolution": "node"
     },
-    "include": ["*.ts", "../frontend/firebase.ts"]
-}
+    "include": ["**/*.ts"],
+    "exclude": ["node_modules"]
+  }
