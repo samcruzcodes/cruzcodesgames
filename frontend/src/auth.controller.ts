@@ -10,10 +10,9 @@ import {
 } from "firebase/auth";
 import { doc, setDoc, deleteDoc } from "firebase/firestore";
 import { deleteUser as firebaseDeleteUser } from "firebase/auth";
-import axios from 'axios';
 
 // User Profile Interface
-interface UserProfile {
+type UserProfile = {
   id: string;
   username: string;
   email: string;
@@ -29,11 +28,9 @@ export const doCreateUserWithEmailAndPassword = async (
   password: string
 ): Promise<UserCredential> => {
   try {
-    // Create user in Firebase Auth
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // Create user profile in Firestore
     const userProfile: UserProfile = {
       id: user.uid,
       username,
@@ -43,10 +40,8 @@ export const doCreateUserWithEmailAndPassword = async (
       photoURL: user.photoURL || undefined
     };
 
-    // Store additional user details in Firestore
     await setDoc(doc(db, 'users', user.uid), userProfile);
 
-    // Send email verification
     if (user) {
       await sendEmailVerification(user);
     }
@@ -58,7 +53,6 @@ export const doCreateUserWithEmailAndPassword = async (
   }
 };
 
-// Sign in a user with email and password
 export const doSignInWithEmailAndPassword = async (
   email: string, 
   password: string
@@ -79,7 +73,6 @@ export const doSignInWithGoogle = async (): Promise<UserCredential> => {
   try {
     const result = await signInWithPopup(auth, provider);
     
-    // Optional: Create/update user profile in Firestore
     if (result.user) {
       const userProfile: UserProfile = {
         id: result.user.uid,
@@ -135,6 +128,7 @@ export const doSendEmailVerification = async (): Promise<void> => {
   }
 };
 
+// delete the user from database
 export const deleteUserAccount = async (): Promise<void> => {
   try {
     const currentUser = auth.currentUser;

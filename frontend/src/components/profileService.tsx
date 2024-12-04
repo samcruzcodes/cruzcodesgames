@@ -2,7 +2,7 @@ import { db } from '../../firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { UserProfile } from '../authcontext';
 
-export interface ProfileUpdateData {
+export type ProfileUpdateData = {
   username?: string;
   displayName?: string;
   photoURL?: string;

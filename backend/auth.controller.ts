@@ -18,7 +18,6 @@ export const createUser = async (username: string, email: string, password: stri
       displayName: username
     });
 
-    // Create a detailed user profile in Firestore
     const userProfile: UserProfile = {
       id: userRecord.uid,
       username,
@@ -27,7 +26,6 @@ export const createUser = async (username: string, email: string, password: stri
       displayName: username,
     };
 
-    // Store additional user details in Firestore
     await db.collection('users').doc(userRecord.uid).set(userProfile);
 
     return userRecord;
@@ -37,7 +35,7 @@ export const createUser = async (username: string, email: string, password: stri
   }
 };
 
-// Get a user by ID (admin-side)
+// Get a user by ID 
 export const getUser = async (uid: string): Promise<admin.auth.UserRecord | null> => {
   try {
     const userRecord = await auth.getUser(uid);

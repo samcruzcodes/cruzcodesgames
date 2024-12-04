@@ -3,7 +3,6 @@ import { getAuth, onAuthStateChanged, User as FirebaseUser } from 'firebase/auth
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 
-// Your Firebase config
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
   authDomain: import.meta.env.VITE_AUTH_DOMAIN,
@@ -14,13 +13,11 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_MEASUREMENT_ID
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Define UserProfile interface
-export interface UserProfile {
+export type UserProfile = {
   id: string;
   username?: string;
   email: string;
@@ -30,8 +27,7 @@ export interface UserProfile {
   updatedAt?: string;
 }
 
-// Define context type
-interface AuthContextType {
+type AuthContextType = {
   currentUser: UserProfile | null;
   userLoggedIn: boolean;
   loading: boolean;
@@ -75,12 +71,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const unsubscribe = onAuthStateChanged(auth, async (user: FirebaseUser | null) => {
       if (user) {
         try {
-          // Fetch additional user details from Firestore
           const userDocRef = doc(db, 'users', user.uid);
           const userDoc = await getDoc(userDocRef);
 
           if (userDoc.exists()) {
-            // Combine Firebase Auth user with Firestore profile
             const userProfile: UserProfile = {
               id: user.uid,
               email: user.email || '',
@@ -94,7 +88,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setCurrentUser(userProfile);
             setUserLoggedIn(true);
           } else {
-            // If no Firestore document, create a basic profile
             const basicProfile: UserProfile = {
               id: user.uid,
               email: user.email || '',
@@ -119,7 +112,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
     });
 
-    // Cleanup subscription
     return () => unsubscribe();
   }, []);
 
@@ -130,7 +122,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
-// Custom hook to use the auth context
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {

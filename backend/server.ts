@@ -6,12 +6,7 @@ import { db, auth } from "./firebase";
 const app: Express = express();
 const port = 8080;
 
-// Middleware
-app.use(cors({
-  origin: 'http://localhost:5173', 
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  credentials: true
-}));
+app.use(cors());
 app.use(express.json());
 
 // Fetch all games
@@ -142,7 +137,6 @@ app.delete("/api/users/:id", async (req: Request, res: Response) => {
   }
 });
 
-// Start the server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

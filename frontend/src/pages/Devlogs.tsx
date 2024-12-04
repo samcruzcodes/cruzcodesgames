@@ -7,7 +7,14 @@ const Devlogs = () => {
       title: "Building the Game Portfolio Site",
       date: "November 16, 2024",
       content:
-        "In this post, I'll walk through the process of building my full-stack game portfolio site. This site will allow users to interact with games, see leaderboards, and much more! I'm currently setting up Firebase authentication and integrating the itch.io API.",
+        "In this post, I'll walk through the process of building my full-stack game portfolio site. This site will allow users to interact with games, see leaderboards, and much more! I'm currently setting up Firebase authentication",
+    },
+    {
+      id: 2,
+      title: "Seperating front-end from back-end",
+      date: "November 25, 2024",
+      content:
+        "In this post, I'll walk through the importance of seperating front-end from back-end and the necessities of firebase.ts in both.",
     },
   ];
 
