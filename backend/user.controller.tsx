@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { User } from "../lib/types/index";
-import { db } from "./server";
+import { db } from "./firebase";
 
 export const addUser = async (id: string, user: User) => {
   const userRef = db.collection("users").doc(id);
