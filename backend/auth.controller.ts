@@ -1,14 +1,13 @@
 import { auth, db } from "./firebase";
 import admin from "firebase-admin";
 
-// User Profile Interface
-interface UserProfile {
+type UserProfile = {
   id: string;
   username: string;
   email: string;
   createdAt: string;
   displayName?: string;
-}
+};
 
 // Create user with email and password
 export const createUser = async (username: string, email: string, password: string): Promise<admin.auth.UserRecord> => {
@@ -49,16 +48,14 @@ export const getUser = async (uid: string): Promise<admin.auth.UserRecord | null
   }
 };
 
-// Update user info (admin-side)
+// Update user info 
 export const updateUser = async (uid: string, updates: Partial<UserProfile>) => {
   try {
-    // Update Firebase Auth user
     const updatedAuthUser = await auth.updateUser(uid, {
       displayName: updates.username,
       email: updates.email
     });
 
-    // Update Firestore user profile
     await db.collection('users').doc(uid).update(updates);
 
     return updatedAuthUser;
@@ -68,16 +65,28 @@ export const updateUser = async (uid: string, updates: Partial<UserProfile>) => 
   }
 };
 
-// Delete user (admin-side)
+// Delete user 
 export const deleteUser = async (uid: string) => {
   try {
-    // Delete from Firebase Auth
-    await auth.deleteUser(uid);
-    
-    // Delete from Firestore
-    await db.collection('users').doc(uid).delete();
+    const batch = db.batch();
 
-    return { success: true };
+    const userRef = db.collection('users').doc(uid);
+    
+    batch.delete(userRef);
+
+    const userGamesRef = await db.collection('games')
+      .where('userId', '==', uid)
+      .get();
+
+    userGamesRef.docs.forEach(doc => {
+      batch.delete(doc.ref);
+    });
+
+    await batch.commit();
+
+    await auth.deleteUser(uid);
+
+    return { success: true, message: 'User deleted successfully' };
   } catch (error) {
     console.error("Error deleting user:", error);
     throw error;

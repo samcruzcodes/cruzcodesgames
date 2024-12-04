@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useAuth } from '../authcontext';
 import { updateProfile } from './profileService';
 import { useNavigate } from 'react-router-dom';
+import { deleteUserAccount } from '../auth.controller';
+
 
 const EditProfile: React.FC = () => {
     const { currentUser, refreshUserProfile } = useAuth();
@@ -44,6 +46,21 @@ const EditProfile: React.FC = () => {
             console.error('Profile update error:', err);
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    const handleDeleteAccount = async () => {
+        if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+            setIsLoading(true);
+            try {
+                await deleteUserAccount();
+                navigate('/login');
+            } catch (err: any) {
+                setError(err.message || 'Failed to delete account');
+                console.error('Account deletion error:', err);
+            } finally {
+                setIsLoading(false);
+            }
         }
     };
 
@@ -113,6 +130,20 @@ const EditProfile: React.FC = () => {
                         >
                             Cancel
                         </button>
+                    </div>
+
+                    <div className="mt-8 pt-4 border-t border-gray-200">
+                        <button
+                            type="button"
+                            onClick={handleDeleteAccount}
+                            disabled={isLoading}
+                            className="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors"
+                        >
+                            {isLoading ? 'Deleting Account...' : 'Delete Account'}
+                        </button>
+                        <p className="text-sm text-gray-500 mt-2 text-center">
+                            This action cannot be undone.
+                        </p>
                     </div>
                 </form>
             </div>

@@ -8,7 +8,9 @@ import {
   signInWithPopup,
   UserCredential
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, deleteDoc } from "firebase/firestore";
+import { deleteUser as firebaseDeleteUser } from "firebase/auth";
+import axios from 'axios';
 
 // User Profile Interface
 interface UserProfile {
@@ -130,5 +132,22 @@ export const doSendEmailVerification = async (): Promise<void> => {
   } else {
     console.error("No current user for verification.");
     throw new Error("No current user to verify email.");
+  }
+};
+
+export const deleteUserAccount = async (): Promise<void> => {
+  try {
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      throw new Error('No authenticated user found');
+    }
+
+    await deleteDoc(doc(db, 'users', currentUser.uid));
+
+    await firebaseDeleteUser(currentUser);
+    
+  } catch (error: any) {
+    console.error("Error deleting user:", error);
+    throw new Error(`Failed to delete account: ${error.message}`);
   }
 };

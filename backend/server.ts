@@ -134,9 +134,10 @@ app.put("/api/users/:id", async (req: Request, res: Response) => {
 app.delete("/api/users/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    await deleteUser(id);
-    res.status(200).json({ message: "User deleted successfully" });
+    const result = await deleteUser(id);
+    res.status(200).json(result);
   } catch (err) {
+    console.error("Error deleting user:", err);
     res.status(500).json({ error: "Error deleting user" });
   }
 });
