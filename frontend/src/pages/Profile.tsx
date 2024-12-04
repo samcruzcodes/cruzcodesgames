@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth } from "../authcontext";
-import { doSignOut } from "../../../backend/auth.controller";
+import { doSignOut } from "../auth.controller";
 import { useNavigate } from "react-router-dom";
 
 const Profile: React.FC = () => {

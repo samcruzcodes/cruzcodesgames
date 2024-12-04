@@ -8,14 +8,19 @@ const serviceAccount = {
 };
 
 if (!serviceAccount.projectId || !serviceAccount.privateKey || !serviceAccount.clientEmail) {
+  console.error('Missing Firebase Admin SDK credentials');
   throw new Error('Missing required Firebase Admin SDK credentials. Check your environment variables.');
 }
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert({
+    projectId: serviceAccount.projectId,
+    privateKey: serviceAccount.privateKey,
+    clientEmail: serviceAccount.clientEmail
+  })
 });
 
 const db = admin.firestore();
-const auth = admin.auth(); 
+const auth = admin.auth();
 
 export { db, auth };
