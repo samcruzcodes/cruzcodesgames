@@ -1,26 +1,86 @@
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import { createUser, getUser, updateUser, deleteUser } from "./auth.controller";
-import {
-  doCreateUserWithEmailAndPassword,
-  doSignInWithEmailAndPassword,
-  doSignInWithGoogle,
-  doSignOut,
-  doPasswordReset,
-  doSendEmailVerification,
-} from "../frontend/src/auth.controller";
 import { db, auth } from "./firebase";
 
 const app: Express = express();
-const port = process.env.PORT || 8080;
+const port = 8080;
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://your-production-domain.com'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  origin: 'http://localhost:5173', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  credentials: true
 }));
 app.use(express.json());
+
+// Fetch all games
+app.get("/api/games", async (req: Request, res: Response) => {
+  try {
+    const snapshot = await db.collection("games").get();
+    if (snapshot.empty) {
+      return res.status(404).json({ error: "No games found" });
+    }
+    const games = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    res.json(games);
+  } catch (error) {
+    console.error("Error fetching games:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Fetch a specific game
+app.get("/api/games/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const gameDoc = await db.collection("games").doc(id).get();
+    if (!gameDoc.exists) {
+      return res.status(404).json({ error: "Game not found" });
+    }
+    res.json({ id: gameDoc.id, ...gameDoc.data() });
+  } catch (error) {
+    console.error("Error fetching game data:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Increment game views
+app.post("/api/games/:id/increment-views", async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const gameRef = db.collection("games").doc(id);
+    const gameDoc = await gameRef.get();
+    if (!gameDoc.exists) {
+      return res.status(404).json({ error: "Game not found" });
+    }
+    const currentViews = gameDoc.data()?.views || 0;
+    await gameRef.update({ views: currentViews + 1 });
+    res.json({ success: true, newViews: currentViews + 1 });
+  } catch (error) {
+    console.error("Error updating views:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Update game likes
+app.patch("/api/games/:id/likes", async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { increment } = req.body;
+  try {
+    const gameRef = db.collection("games").doc(id);
+    const gameDoc = await gameRef.get();
+    if (!gameDoc.exists) {
+      return res.status(404).json({ error: "Game not found" });
+    }
+    const currentLikes = gameDoc.data()?.likes || 0;
+    const newLikes = increment ? currentLikes + 1 : Math.max(0, currentLikes - 1);
+    await gameRef.update({ likes: newLikes });
+    res.json({ success: true, newLikes });
+  } catch (error) {
+    console.error("Error updating likes:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 // Authentication Routes
 app.post("/api/auth/signup", async (req: Request, res: Response) => {
@@ -43,53 +103,6 @@ app.post("/api/auth/signup", async (req: Request, res: Response) => {
     } else {
       res.status(500).json({ error: "Internal server error during signup" });
     }
-  }
-});
-
-app.post("/api/auth/signin", async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-  try {
-    const userCredential = await doSignInWithEmailAndPassword(email, password);
-    res.status(200).json({ message: "Signed in successfully", user: userCredential.user });
-  } catch (err) {
-    res.status(400).json({ error: "Sign-in failed" });
-  }
-});
-
-app.post("/api/auth/google", async (req: Request, res: Response) => {
-  try {
-    const result = await doSignInWithGoogle();
-    res.status(200).json({ message: "Google sign-in successful", user: result.user });
-  } catch (err) {
-    res.status(400).json({error: "Google sign-in failed" });
-  }
-});
-
-app.post("/api/auth/signout", async (req: Request, res: Response) => {
-  try {
-    await doSignOut();
-    res.status(200).json({ message: "Signed out successfully" });
-  } catch (err) {
-    res.status(400).json({error: "Sign-out failed" });
-  }
-});
-
-app.post("/api/auth/password-reset", async (req: Request, res: Response) => {
-  const { email } = req.body;
-  try {
-    await doPasswordReset(email);
-    res.status(200).json({ message: "Password reset email sent" });
-  } catch (err) {
-    res.status(400).json({error: "Password reset failed" });
-  }
-});
-
-app.post("/api/auth/verify-email", async (req: Request, res: Response) => {
-  try {
-    await doSendEmailVerification();
-    res.status(200).json({ message: "Verification email sent" });
-  } catch (err) {
-    res.status(400).json({error: "Email verification failed" });
   }
 });
 
@@ -128,7 +141,9 @@ app.delete("/api/users/:id", async (req: Request, res: Response) => {
   }
 });
 
-// Start server
+// Start the server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
+export default app;
