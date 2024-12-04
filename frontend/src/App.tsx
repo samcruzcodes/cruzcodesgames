@@ -6,6 +6,9 @@ import GamePage from "./pages/GamePage";
 import { PATHS } from "./constants/Navigation";
 import { AuthProvider } from "./authcontext";
 import "./index.css";
+import EditProfile from "./components/editProfile";
+import Login from "./components/login";
+import SignUp from "./components/signup";
 
 const router = createBrowserRouter([
   {
@@ -21,12 +24,23 @@ const router = createBrowserRouter([
         path: "/public/games/:id",
         element: <GamePage />,
       },
+      {
+        path: "/edit-profile",
+        element: <EditProfile />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/signup",
+        element: <SignUp />,
+      },
     ],
   },
 ]);
 
 export default function App() {
-  console.log("App rendering");
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
       <AuthProvider>
