@@ -1,7 +1,8 @@
 import React from "react";
 import { useAuth } from "../authcontext";
-import { doSignOut } from "../auth.controller";
 import { useNavigate } from "react-router-dom";
+import { doSignOut } from "../auth.controller";
+import placeholder from "../assets/placeholder.jpg"
 
 const Profile = () => {
   const { currentUser, userLoggedIn } = useAuth();
@@ -22,20 +23,20 @@ const Profile = () => {
 
   if (!userLoggedIn) {
     return (
-      <div className="container">
-        <div className="card text-center">
-          <h1 className="heading">Welcome!</h1>
-          <p className="text-muted">
+      <div style={styles.container}>
+        <div style={styles.card}>
+          <h1 style={styles.heading}>Welcome!</h1>
+          <p style={styles.textMuted}>
             You are not logged in. Please log in or create an account to view
             your profile.
           </p>
-          <div className="button-group">
-            <button onClick={() => navigate("/login")} className="primary-button">
+          <div style={styles.buttonGroup}>
+            <button onClick={() => navigate("/login")} style={styles.primaryButton}>
               Login
             </button>
             <button
               onClick={() => navigate("/signup")}
-              className="secondary-button"
+              style={styles.secondaryButton}
             >
               Create Account
             </button>
@@ -54,44 +55,122 @@ const Profile = () => {
     : "Never";
 
   return (
-    <div className="container">
-      <div className="card">
-        <h1 className="heading text-center">
-          Welcome, {currentUser?.username || currentUser?.email}!
-        </h1>
+    <div style={styles.container}>
+      <div style={styles.card}>
+        <h1 style={styles.heading}>Welcome, {currentUser?.username || currentUser?.email}!</h1>
 
-        {currentUser?.photoURL && (
-          <div className="profile-picture">
-            <img
-              src={currentUser.photoURL}
-              alt="Profile"
-              className="rounded-full"
-            />
-          </div>
-        )}
+        <div style={styles.profilePicture}>
+          <img
+            src={currentUser?.photoURL || placeholder}
+            alt="Profile Photo"
+            style={styles.profileImage}
+          />
+        </div>
 
-        <div className="info-group">
+        <div style={styles.infoGroup}>
           <p><strong>Email:</strong> {currentUser?.email}</p>
           <p>
             <strong>Display Name:</strong>{" "}
-            {currentUser?.displayName || "Not set"}
+            {currentUser?.displayName || currentUser?.username}
           </p>
           <p><strong>User ID:</strong> {currentUser?.id}</p>
           <p><strong>Created:</strong> {formattedDate}</p>
           <p><strong>Last Updated:</strong> {formattedUpdateDate}</p>
         </div>
 
-        <div className="button-group">
-          <button onClick={handleEditProfile} className="primary-button">
+        <div style={styles.buttonGroup}>
+          <button onClick={handleEditProfile} style={styles.primaryButton}>
             Edit Profile
           </button>
-          <button onClick={handleSignOut} className="danger-button">
+          <button onClick={handleSignOut} style={styles.dangerButton}>
             Sign Out
           </button>
         </div>
       </div>
     </div>
   );
+};
+
+const styles = {
+  container: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-start", // Align content to the top
+    height: "100vh", // Take full viewport height
+    padding: "20px",
+    backgroundColor: "var(--background-color)",
+  },
+  card: {
+    width: "100%",
+    maxWidth: "600px",
+    padding: "30px",
+    borderRadius: "10px",
+    backgroundColor: "var(--background-primary-mix)",
+    boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
+    marginTop: "20px", // Space from the top of the screen
+  },
+  heading: {
+    fontSize: "2rem",
+    fontWeight: "bold",
+    color: "var(--primary-color)",
+    marginBottom: "20px",
+    textAlign: "center",
+  },
+  textMuted: {
+    fontSize: "1.1rem",
+    color: "var(--subtle-accent)",
+    marginBottom: "20px",
+  },
+  profilePicture: {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "20px",
+  },
+  profileImage: {
+    width: "100px",
+    height: "100px",
+    borderRadius: "50%",
+    objectFit: "cover",
+  },
+  infoGroup: {
+    marginBottom: "25px",
+    color: "var(--text-color)",
+  },
+  buttonGroup: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "15px",
+  },
+  primaryButton: {
+    padding: "12px 20px",
+    backgroundColor: "var(--accent-color)",
+    color: "var(--primary-color)",
+    border: "none",
+    borderRadius: "5px",
+    fontSize: "1rem",
+    cursor: "pointer",
+    transition: "background 0.3s",
+  },
+  secondaryButton: {
+    padding: "12px 20px",
+    backgroundColor: "var(--secondary-color)",
+    color: "var(--primary-color)",
+    border: "none",
+    borderRadius: "5px",
+    fontSize: "1rem",
+    cursor: "pointer",
+    transition: "background 0.3s",
+  },
+  dangerButton: {
+    padding: "12px 20px",
+    backgroundColor: "var(--highlight-color)",
+    color: "var(--primary-color)",
+    border: "none",
+    borderRadius: "5px",
+    fontSize: "1rem",
+    cursor: "pointer",
+    transition: "background 0.3s",
+  },
 };
 
 export default Profile;

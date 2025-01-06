@@ -11,11 +11,11 @@ const EditProfile = () => {
   const [formData, setFormData] = useState({
     username: currentUser?.username || '',
     displayName: currentUser?.displayName || '',
-    photoURL: currentUser?.photoURL || '',
   });
 
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -26,7 +26,7 @@ const EditProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    setIsSaving(true);
     setError('');
 
     try {
@@ -35,7 +35,6 @@ const EditProfile = () => {
       await updateProfile(currentUser.id, {
         username: formData.username,
         displayName: formData.displayName,
-        photoURL: formData.photoURL,
       });
 
       await refreshUserProfile();
@@ -44,13 +43,13 @@ const EditProfile = () => {
       setError('Failed to update profile');
       console.error('Profile update error:', err);
     } finally {
-      setIsLoading(false);
+      setIsSaving(false);
     }
   };
 
   const handleDeleteAccount = async () => {
     if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-      setIsLoading(true);
+      setIsDeleting(true);
       try {
         await deleteUserAccount();
         navigate('/login');
@@ -58,79 +57,68 @@ const EditProfile = () => {
         setError(err.message || 'Failed to delete account');
         console.error('Account deletion error:', err);
       } finally {
-        setIsLoading(false);
+        setIsDeleting(false);
       }
     }
   };
 
   return (
-    <div className="container">
-      <div className="card">
-        <h1 className="heading">Edit Profile</h1>
+    <div style={styles.container}>
+      <div style={styles.card}>
+        <h1 style={styles.heading}>Edit Profile</h1>
 
-        {error && <div className="error">{error}</div>}
+        {error && <div style={styles.error}>{error}</div>}
 
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label className="label">Username</label>
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Username</label>
             <input
               type="text"
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className="input"
+              style={styles.input}
             />
           </div>
 
-          <div className="form-group">
-            <label className="label">Display Name</label>
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Display Name</label>
             <input
               type="text"
               name="displayName"
               value={formData.displayName}
               onChange={handleChange}
-              className="input"
+              style={styles.input}
             />
           </div>
 
-          <div className="form-group">
-            <label className="label">Profile Picture URL</label>
-            <input
-              type="text"
-              name="photoURL"
-              value={formData.photoURL}
-              onChange={handleChange}
-              className="input"
-            />
-          </div>
-
-          <div className="button-group">
+          <div style={styles.buttonGroup}>
             <button
               type="submit"
-              disabled={isLoading}
-              className="primary-button"
+              disabled={isSaving || isDeleting}
+              style={styles.primaryButton}
             >
-              {isLoading ? 'Updating...' : 'Save Changes'}
+              {isSaving ? 'Saving...' : 'Save Changes'}
             </button>
             <button
               type="button"
               onClick={() => navigate('/profile')}
-              className="secondary-button"
+              style={styles.secondaryButton}
             >
               Cancel
             </button>
           </div>
 
-          <div className="delete-section">
+          <div style={styles.deleteSection}>
             <button
               type="button"
               onClick={handleDeleteAccount}
-              disabled={isLoading}
-              className="delete-button"
+              disabled={isSaving || isDeleting}
+              style={styles.deleteButton}
             >
-              {isLoading ? 'Deleting Account...' : 'Delete Account'}
+              {isDeleting ? 'Deleting Account...' : 'Delete Account'}
             </button>
-            <p className="delete-warning">
+            <p style={styles.deleteWarning}>
               This action cannot be undone.
             </p>
           </div>
@@ -138,6 +126,99 @@ const EditProfile = () => {
       </div>
     </div>
   );
+};
+const styles = {
+  container: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-start", // Align content to the top
+    height: "100vh", // Take full viewport height
+    padding: "20px",
+    backgroundColor: "var(--background-color)",
+  },
+  card: {
+    width: "100%",
+    maxWidth: "600px",
+    padding: "30px",
+    borderRadius: "10px",
+    backgroundColor: "var(--background-primary-mix)",
+    boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
+    marginTop: "20px", // Space from the top of the screen
+  },
+  heading: {
+    fontSize: "2rem",
+    fontWeight: "bold",
+    color: "var(--primary-color)",
+    marginBottom: "20px",
+    textAlign: "center",
+  },
+  error: {
+    color: "red",
+    marginBottom: "15px",
+    textAlign: "center",
+  },
+  formGroup: {
+    marginBottom: "20px",
+  },
+  label: {
+    display: "block",
+    marginBottom: "8px",
+    fontSize: "1rem",
+    color: "var(--text-color)",
+  },
+  input: {
+    width: "100%",
+    padding: "10px",
+    fontSize: "1rem",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+    backgroundColor: "#fff",
+    color: "var(--text-color)",
+  },
+  buttonGroup: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "15px",
+  },
+  primaryButton: {
+    padding: "12px 20px",
+    backgroundColor: "var(--accent-color)",
+    color: "var(--primary-color)",
+    border: "none",
+    borderRadius: "5px",
+    fontSize: "1rem",
+    cursor: "pointer",
+    transition: "background 0.3s",
+  },
+  secondaryButton: {
+    padding: "12px 20px",
+    backgroundColor: "var(--secondary-color)",
+    color: "var(--primary-color)",
+    border: "none",
+    borderRadius: "5px",
+    fontSize: "1rem",
+    cursor: "pointer",
+    transition: "background 0.3s",
+  },
+  deleteSection: {
+    marginTop: "20px",
+    textAlign: "center",
+  },
+  deleteButton: {
+    padding: "12px 20px",
+    backgroundColor: "var(--highlight-color)",
+    color: "var(--primary-color)",
+    border: "none",
+    borderRadius: "5px",
+    fontSize: "1rem",
+    cursor: "pointer",
+    transition: "background 0.3s",
+  },
+  deleteWarning: {
+    fontSize: "0.9rem",
+    color: "var(--text-color)",
+    marginTop: "10px",
+  },
 };
 
 export default EditProfile;

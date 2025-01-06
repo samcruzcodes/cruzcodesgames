@@ -37,7 +37,8 @@ export const doCreateUserWithEmailAndPassword = async (
       email: user.email || '',
       createdAt: new Date().toISOString(),
       displayName: username,
-      photoURL: user.photoURL || undefined
+      // Only include photoURL if it exists, otherwise omit it
+      photoURL: user.photoURL || '' // or you could use a default URL here instead of ''
     };
 
     await setDoc(doc(db, 'users', user.uid), userProfile);
@@ -52,6 +53,7 @@ export const doCreateUserWithEmailAndPassword = async (
     throw new Error(`Sign-up failed: ${error.message}`);
   }
 };
+
 
 export const doSignInWithEmailAndPassword = async (
   email: string, 
