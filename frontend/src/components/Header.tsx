@@ -1,103 +1,83 @@
 import { useState } from "react";
-import {
-    createStyles,
-    Header,
-    Container,
-    Group,
-    Burger,
-} from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/logo.png";
-import { Link } from "react-router-dom";
 
-const useStyles = createStyles((theme) => ({
-    header: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        height: "100%",  
-        backgroundColor: "var(--background-primary-mix)",
-        color: "var(--text-color)",
-    },
+export default function Header() {
+  const location = useLocation();
 
-    links: {
-        [theme.fn.smallerThan("xs")]: {
-            display: "none",
-        },
-    },
+  const menuItems = [
+    { name: "GAMES", href: "/" },
+    { name: "DEVLOGS", href: "/devlogs" },
+    { name: "PROFILE", href: "/profile" },
+  ];
 
-    burger: {
-        [theme.fn.largerThan("xs")]: {
-            display: "none",
-        },
-    },
+  return (
+    <header style={styles.header}>
+      <nav style={styles.navbar}>
+        <div style={styles.logoContainer}>
+          <a href="/">
+            <img style={styles.logo} src={logo} alt="Logo" />
+          </a>
+        </div>
 
-    logo: {
-        height: 45,
-        width: "auto",
-        cursor: "pointer",
-    },
-
-    link: {
-        color: "var(--text-color)",
-        textDecoration: "none",
-        padding: "8px 12px",
-        borderRadius: "4px",
-
-        "&:hover": {
-            backgroundColor: "rgba(255, 255, 255, 0.1)",
-        },
-    },
-
-    linkActive: {
-        color: "var(--accent-color)",
-        fontWeight: "bold",
-    },
-}));
-
-interface HeaderSimpleProps {
-    links: { link: string; label: string }[];
+        <ul style={styles.links}>
+          {menuItems.map((item) => (
+            <li key={item.name} style={styles.linkItem}>
+              <a
+                style={{
+                  ...styles.link,
+                  color: location.pathname === item.href ? "var(--highlight-color)" : styles.link.color,
+                }}
+                href={item.href}
+              >
+                {item.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </header>
+  );
 }
 
-export function HeaderSimple({ links }: HeaderSimpleProps) {
-    const [opened, { toggle }] = useDisclosure(false);
-    const [active, setActive] = useState(links[0].link);
-    const { classes, cx } = useStyles();
-
-    const items = links.map((link) => (
-        <Link
-            key={link.label}
-            to={link.link}
-            className={cx(classes.link, {
-                [classes.linkActive]: active === link.link,
-            })}
-            onClick={(event) => {
-                setActive(link.link);
-            }}
-        >
-            {link.label}
-        </Link>
-    ));
-
-    return (
-        <Header height={70} style={{ width: "100%" }}> 
-            <Container className={classes.header}>
-                <img
-                    src={logo}
-                    alt="Logo"
-                    className={classes.logo}
-                    onClick={() => window.location.href = '/'} 
-                />
-                <Group spacing={5} className={classes.links}>
-                    {items}
-                </Group>
-                <Burger
-                    opened={opened}
-                    onClick={toggle}
-                    className={classes.burger}
-                    size="sm"
-                />
-            </Container>
-        </Header>
-    );
-}
+const styles = {
+  header: {
+    position: "top",
+    top: 0,
+    padding: "0 2rem",
+    backgroundColor: "var(--background-primary-mix)",
+    borderBottom: "2px solid var(--subtle-accent)",
+    zIndex: 100,
+    fontFamily: "'SpaceMono', sans-serif",
+  },
+  navbar: {
+    maxWidth: "1200px",
+    margin: "0 auto",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    minHeight: "60px",
+  },
+  logoContainer: {
+    display: "flex",
+    alignItems: "center",
+  },
+  logo: {
+    objectFit: "cover",
+    height: "3rem",
+    width: "3rem",
+  },
+  links: {
+    display: "flex",
+    gap: "2rem",
+  },
+  linkItem: {
+    listStyle: "none",
+  },
+  link: {
+    textDecoration: "none",
+    fontSize: "1rem",
+    color: "var(--text-color)",
+    transition: "color 0.2s ease",
+  },
+};

@@ -127,6 +127,7 @@ const EditProfile = () => {
     </div>
   );
 };
+
 const styles = {
   container: {
     display: "flex",

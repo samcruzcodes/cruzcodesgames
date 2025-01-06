@@ -1,19 +1,28 @@
 import { MantineProvider } from "@mantine/core";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import ErrorPage from "./pages/Error";
-import RootLayout from "./layouts/RootLayout";
 import GamePage from "./pages/GamePage"; 
 import { PATHS } from "./constants/Navigation";
 import { AuthProvider } from "./authcontext";
-import "./index.css";
+import Header from "./components/Header";
 import EditProfile from "./components/editProfile";
 import Login from "./components/login";
 import SignUp from "./components/signup";
+import "./index.css";
+
+function AppLayout() {
+  return (
+    <div className="app-container">
+      <Header />
+        <Outlet />
+    </div>
+  );
+}
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayout />,
+    element: <AppLayout />,
     errorElement: <ErrorPage />,
     children: [  
       ...PATHS.map((item) => ({
@@ -48,4 +57,4 @@ export default function App() {
       </AuthProvider>
     </MantineProvider>
   );
-};
+}
