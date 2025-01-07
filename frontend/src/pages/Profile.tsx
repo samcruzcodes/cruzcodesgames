@@ -1,4 +1,3 @@
-import React from "react";
 import { useAuth } from "../authcontext";
 import { useNavigate } from "react-router-dom";
 import { doSignOut } from "../auth.controller";
@@ -95,8 +94,8 @@ const styles = {
   container: {
     display: "flex",
     justifyContent: "center",
-    alignItems: "flex-start", // Align content to the top
-    height: "100vh", // Take full viewport height
+    alignItems: "flex-start", 
+    height: "100vh", 
     padding: "20px",
     backgroundColor: "var(--background-color)",
   },
@@ -107,14 +106,14 @@ const styles = {
     borderRadius: "10px",
     backgroundColor: "var(--background-primary-mix)",
     boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
-    marginTop: "20px", // Space from the top of the screen
+    marginTop: "20px", 
   },
   heading: {
     fontSize: "2rem",
     fontWeight: "bold",
     color: "var(--primary-color)",
     marginBottom: "20px",
-    textAlign: "center",
+    textAlign: "center" as const,
   },
   textMuted: {
     fontSize: "1.1rem",
@@ -130,7 +129,7 @@ const styles = {
     width: "100px",
     height: "100px",
     borderRadius: "50%",
-    objectFit: "cover",
+    objectFit: "cover" as const,
   },
   infoGroup: {
     marginBottom: "25px",
@@ -138,7 +137,7 @@ const styles = {
   },
   buttonGroup: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column" as const,
     gap: "15px",
   },
   primaryButton: {

@@ -59,21 +59,6 @@ const GamePage = () => {
     }
   };
 
-  const fetchGame = async () => {
-    try {
-      const response = await fetch(`http://localhost:8080/api/games/${id}`);
-      if (!response.ok) {
-        setError('Failed to fetch game data');
-        return;
-      }
-      const data = await response.json();
-      setGame(data);
-      setLikes(data.likes);
-    } catch (error) {
-      setError('Error fetching game data');
-    }
-  };
-
   if (loading) {
     return <div id="error-page"><h1>Loading...</h1></div>;
   }

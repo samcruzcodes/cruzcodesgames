@@ -1,5 +1,3 @@
-import React from "react";
-
 const Devlogs = () => {
   const posts = [
     {
@@ -54,7 +52,7 @@ const Devlogs = () => {
 const styles = {
   container: {
     padding: "20px",
-    textAlign: "center",
+    textAlign: "center" as const,
     maxWidth: "900px",
     margin: "0 auto",
   },
@@ -65,7 +63,7 @@ const styles = {
   },
   postsContainer: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column" as const,
     gap: "20px",
   },
   postCard: {

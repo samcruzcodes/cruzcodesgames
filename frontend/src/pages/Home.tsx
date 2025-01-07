@@ -44,13 +44,13 @@ const HomePage = () => {
 
 const styles = {
   homepage: {
-    textAlign: "center",
+    textAlign: "center" as const,
     padding: "20px",
   },
   gameList: {
     display: "flex",
     justifyContent: "center",
-    flexWrap: "wrap",
+    flexWrap: "wrap" as const,
     gap: "20px",
     marginTop: "20px",
   },
