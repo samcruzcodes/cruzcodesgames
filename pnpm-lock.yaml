@@ -17,16 +17,10 @@ importers:
       firebase:
         specifier: ^9.17.2
         version: 9.17.2
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
       path-browserify:
         specifier: ^1.0.1
         version: 1.0.1
     devDependencies:
-      '@types/lodash':
-        specifier: ^4.17.14
-        version: 4.17.14
       eslint:
         specifier: ^8.48.0
         version: 8.48.0
@@ -166,10 +160,7 @@ importers:
       sort-by:
         specifier: ^1.2.0
         version: 1.2.0
-      zustand:
-        specifier: ^5.0.2
-        version: 5.0.2(@types/react@18.2.15)(react@18.2.0)
-    devDependencies:
+      devDependencies:
       '@types/node':
         specifier: ^20.8.9
         version: 20.8.9
@@ -1209,9 +1200,6 @@ packages:
 
   '@types/linkify-it@3.0.4':
     resolution: {integrity: sha512-hPpIeeHb/2UuCw06kSNAOVWgehBLXEo0/fUs0mw3W2qhqX89PI2yvok83MnuctYGCPrabGIoi0fFso4DQ+sNUQ==}
-
-  '@types/lodash@4.17.14':
-    resolution: {integrity: sha512-jsxagdikDiDBeIRaPYtArcT8my4tN1og7MtMRquFT3XNA6axxyHDRUemqDz/taRDdOUn0GnGHRCuff4q48sW9A==}
 
   '@types/long@4.0.2':
     resolution: {integrity: sha512-MqTGEo5bj5t157U6fA/BiDynNkn0YknVdh48CMPkTSpFTVmvao5UQmm7uEF6xBEo7qIMAlY/JSleYaE6VOdpaA==}
@@ -3205,24 +3193,6 @@ packages:
   yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
-
-  zustand@5.0.2:
-    resolution: {integrity: sha512-8qNdnJVJlHlrKXi50LDqqUNmUbuBjoKLrYQBnoChIbVph7vni+sY+YpvdjXG9YLd/Bxr6scMcR+rm5H3aSqPaw==}
-    engines: {node: '>=12.20.0'}
-    peerDependencies:
-      '@types/react': '>=18.0.0'
-      immer: '>=9.0.6'
-      react: '>=18.0.0'
-      use-sync-external-store: '>=1.2.0'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-      immer:
-        optional: true
-      react:
-        optional: true
-      use-sync-external-store:
-        optional: true
 
 snapshots:
 
@@ -6616,8 +6586,3 @@ snapshots:
   yn@3.1.1: {}
 
   yocto-queue@0.1.0: {}
-
-  zustand@5.0.2(@types/react@18.2.15)(react@18.2.0):
-    optionalDependencies:
-      '@types/react': 18.2.15
-      react: 18.2.0
