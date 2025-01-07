@@ -14,7 +14,7 @@ const staticGames: Omit<Game, "likes" | "views">[] = [
     margin: "-10rem 0.5rem -10rem 0"  
   },
   {
-    id: "cheezy",
+    id: "cheezy-conundrum",
     title: "Cheezy Conundrum",
     description: "Guide Timmy and Tommy out this Cheezy Conundrum.",
     thumbnailUrl: cheezyLogo,

@@ -10,7 +10,7 @@ const GamePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [likes, setLikes] = useState<number | null>(null);
-  const [hasLiked, setHasLiked] = useState<boolean>(false); 
+  const [hasLiked, setHasLiked] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchGame = async () => {
@@ -43,7 +43,7 @@ const GamePage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ increment: !hasLiked }), 
+        body: JSON.stringify({ increment: !hasLiked }),
       });
 
       if (!response.ok) {
@@ -53,7 +53,7 @@ const GamePage = () => {
 
       const data = await response.json();
       setLikes(data.newLikes);
-      setHasLiked(!hasLiked); 
+      setHasLiked(!hasLiked);
     } catch (error) {
       console.error('Error updating likes:', error);
     }
@@ -70,26 +70,26 @@ const GamePage = () => {
   return (
     <div style={styles.gamePage}>
       <h1 style={styles.title}>{game.title}</h1>
-      <iframe 
-        src={game.itchIoUrl} 
-        width={game.width} 
-        height={game.height} 
-        style={{ ...styles.gameContainer, margin: game.margin || '20px' }} 
+      <iframe
+        src={game.itchIoUrl}
+        width={game.width}
+        height={game.height}
+        style={{ ...styles.gameContainer, margin: game.margin || '20px' }}
       />
       <div style={styles.gameDetails}>
         <p><strong>Description:</strong> {game.description}</p>
         <p>
           <strong>Views:</strong> {game.views}
           <br />
-          <span 
-            style={{ display: 'inline-flex', alignItems: 'center', cursor: 'pointer' }} 
+          <span
+            style={{ display: 'inline-flex', alignItems: 'center', cursor: 'pointer' }}
             onClick={handleLike}
           >
-            <IconHeartFilled 
+            <IconHeartFilled
               style={{
-                ...styles.heart, 
-                color: hasLiked ? 'darkred' : 'white', 
-              }} 
+                ...styles.heart,
+                color: hasLiked ? 'darkred' : 'white',
+              }}
             />
             <span style={{ marginLeft: '0.5rem' }}>{likes}</span>
           </span>
@@ -98,7 +98,7 @@ const GamePage = () => {
           <h3>Comments</h3>
           <p>No comments yet. Be the first to comment!</p>
         </div>
-      </div>
+        </div>
     </div>
   );
 };
@@ -130,7 +130,7 @@ const styles = {
     width: '1.5rem',
     height: '1.5rem',
     paddingTop: '.1rem',
-    transition: 'color 0.3s ease', 
+    transition: 'color 0.3s ease',
   },
 };
 

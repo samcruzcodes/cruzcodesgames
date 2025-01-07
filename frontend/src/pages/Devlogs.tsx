@@ -16,19 +16,36 @@ const Devlogs = () => {
       content:
         "In this post, I'll walk through the importance of seperating front-end from back-end and the necessities of firebase.ts in both.",
     },
+    {
+      id: 3,
+      title: "Presentation",
+      date: "December 5, 2024",
+      content:
+        "In this post, I'll walk through the steps taken to present this project to the class and seeing how others did on their own projects.",
+    },
+    {
+      id: 4,
+      title: "Deployment",
+      date: "Dec 30, 2024",
+      content:
+        "In this post, I'll walk through the process of deployment. One of the hardest parts I've encountered thus far.",
+    },
   ];
 
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Devlogs</h1>
       <div style={styles.postsContainer}>
-        {posts.map((post) => (
-          <div key={post.id} style={styles.postCard}>
-            <h2 style={styles.postTitle}>{post.title}</h2>
-            <p style={styles.postDate}>{post.date}</p>
-            <p style={styles.postContent}>{post.content}</p>
-          </div>
-        ))}
+        {posts
+          .slice()
+          .reverse()
+          .map((post) => (
+            <div key={post.id} style={styles.postCard}>
+              <h2 style={styles.postTitle}>{post.title}</h2>
+              <p style={styles.postDate}>{post.date}</p>
+              <p style={styles.postContent}>{post.content}</p>
+            </div>
+          ))}
       </div>
     </div>
   );
