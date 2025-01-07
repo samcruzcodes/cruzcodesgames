@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../authcontext';
 import { updateProfile } from './profileService';
 import { useNavigate } from 'react-router-dom';
 import { deleteUserAccount } from '../auth.controller';
+import { CSSProperties } from 'react';
 
 const EditProfile = () => {
   const { currentUser, refreshUserProfile } = useAuth();
@@ -17,14 +18,14 @@ const EditProfile = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSaving(true);
     setError('');
@@ -40,7 +41,7 @@ const EditProfile = () => {
       await refreshUserProfile();
       navigate('/profile');
     } catch (err) {
-      setError('Failed to update profile');
+      setError((err as Error).message || 'Failed to update profile');
       console.error('Profile update error:', err);
     } finally {
       setIsSaving(false);
@@ -54,7 +55,7 @@ const EditProfile = () => {
         await deleteUserAccount();
         navigate('/login');
       } catch (err) {
-        setError(err.message || 'Failed to delete account');
+        setError((err as Error).message || 'Failed to delete account');
         console.error('Account deletion error:', err);
       } finally {
         setIsDeleting(false);
@@ -128,12 +129,12 @@ const EditProfile = () => {
   );
 };
 
-const styles = {
+const styles: Record<string, CSSProperties> = {
   container: {
     display: "flex",
     justifyContent: "center",
-    alignItems: "flex-start", // Align content to the top
-    height: "100vh", // Take full viewport height
+    alignItems: "flex-start", 
+    height: "100vh", 
     padding: "20px",
     backgroundColor: "var(--background-color)",
   },
@@ -144,19 +145,19 @@ const styles = {
     borderRadius: "10px",
     backgroundColor: "var(--background-primary-mix)",
     boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
-    marginTop: "20px", // Space from the top of the screen
+    marginTop: "20px", 
   },
   heading: {
     fontSize: "2rem",
     fontWeight: "bold",
     color: "var(--primary-color)",
     marginBottom: "20px",
-    textAlign: "center",
+    textAlign: "center" as const, 
   },
   error: {
     color: "red",
     marginBottom: "15px",
-    textAlign: "center",
+    textAlign: "center" as const, 
   },
   formGroup: {
     marginBottom: "20px",
@@ -178,7 +179,7 @@ const styles = {
   },
   buttonGroup: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column" as const, 
     gap: "15px",
   },
   primaryButton: {
@@ -203,7 +204,7 @@ const styles = {
   },
   deleteSection: {
     marginTop: "20px",
-    textAlign: "center",
+    textAlign: "center" as const, 
   },
   deleteButton: {
     padding: "12px 20px",

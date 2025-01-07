@@ -38,8 +38,12 @@ const SignUp = () => {
         formData.password
       );
       navigate('/profile');
-    } catch (error: any) {
-      setError(error.message || 'Failed to create account');
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message || 'Failed to create account');
+      } else {
+        setError('Failed to create account');
+      }
       console.error('Signup error:', error);
     } finally {
       setIsLoading(false);
@@ -53,8 +57,12 @@ const SignUp = () => {
     try {
       await doSignInWithGoogle();
       navigate('/profile');
-    } catch (error: any) {
-      setError(error.message || 'Failed to sign up with Google');
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message || 'Failed to sign up with Google');
+      } else {
+        setError('Failed to sign up with Google');
+      }
       console.error('Google signup error:', error);
     } finally {
       setIsLoading(false);
@@ -173,7 +181,7 @@ const styles = {
   heading: {
     fontSize: "2rem",
     fontWeight: "bold",
-    textAlign: "center",
+    textAlign: "center" as const,
     color: "var(--primary-color)",
     marginBottom: "25px",
   },
@@ -194,11 +202,11 @@ const styles = {
     backgroundColor: "var(--background-primary-mix)",
     color: "var(--text-color)",
     fontSize: "1rem",
-    boxSizing: "border-box",
+    boxSizing: "border-box" as const, 
   },
   buttonGroup: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column" as const, 
     gap: "10px",
     marginTop: "20px",
   },
@@ -223,7 +231,7 @@ const styles = {
     transition: "background 0.3s",
   },
   textCenter: {
-    textAlign: "center",
+    textAlign: "center" as const, 
     marginTop: "20px",
   },
   textSm: {
@@ -240,8 +248,8 @@ const styles = {
   error: {
     color: "red",
     marginBottom: "15px",
-    textAlign: "center",
-  }
+    textAlign: "center" as const, 
+    }
 };
 
 export default SignUp;

@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import logo from "../assets/logo.png";
 
 export default function Header() {
@@ -42,7 +41,7 @@ export default function Header() {
 
 const styles = {
   header: {
-    position: "top",
+    position: "top", 
     top: 0,
     padding: "0 2rem",
     backgroundColor: "var(--background-primary-mix)",
@@ -63,7 +62,7 @@ const styles = {
     alignItems: "center",
   },
   logo: {
-    objectFit: "cover",
+    objectFit: "cover" as const,
     height: "3rem",
     width: "3rem",
   },
@@ -81,3 +80,4 @@ const styles = {
     transition: "color 0.2s ease",
   },
 };
+

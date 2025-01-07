@@ -19,6 +19,11 @@ type UserProfile = {
   createdAt: string;
   displayName?: string;
   photoURL?: string;
+};
+
+// Define a custom error type
+interface CustomError extends Error {
+  code?: string;
 }
 
 // Sign up a new user with email and password
@@ -37,8 +42,7 @@ export const doCreateUserWithEmailAndPassword = async (
       email: user.email || '',
       createdAt: new Date().toISOString(),
       displayName: username,
-      // Only include photoURL if it exists, otherwise omit it
-      photoURL: user.photoURL || '' // or you could use a default URL here instead of ''
+      photoURL: user.photoURL || ''
     };
 
     await setDoc(doc(db, 'users', user.uid), userProfile);
@@ -48,23 +52,24 @@ export const doCreateUserWithEmailAndPassword = async (
     }
 
     return userCredential;
-  } catch (error: any) {
-    console.error("Error signing up:", error.message);
-    throw new Error(`Sign-up failed: ${error.message}`);
+  } catch (error: unknown) {
+    const typedError = error as CustomError;
+    console.error("Error signing up:", typedError.message);
+    throw new Error(`Sign-up failed: ${typedError.message}`);
   }
 };
 
-
+// Sign in with email and password
 export const doSignInWithEmailAndPassword = async (
   email: string, 
   password: string
 ): Promise<UserCredential> => {
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return userCredential;
-  } catch (error: any) {
-    console.error("Error signing in:", error.message);
-    throw new Error(`Sign-in failed: ${error.message}`);
+    return await signInWithEmailAndPassword(auth, email, password);
+  } catch (error: unknown) {
+    const typedError = error as CustomError;
+    console.error("Error signing in:", typedError.message);
+    throw new Error(`Sign-in failed: ${typedError.message}`);
   }
 };
 
@@ -74,7 +79,7 @@ export const doSignInWithGoogle = async (): Promise<UserCredential> => {
   
   try {
     const result = await signInWithPopup(auth, provider);
-    
+
     if (result.user) {
       const userProfile: UserProfile = {
         id: result.user.uid,
@@ -89,9 +94,10 @@ export const doSignInWithGoogle = async (): Promise<UserCredential> => {
     }
 
     return result;
-  } catch (error: any) {
-    console.error("Error signing in with Google:", error.message);
-    throw new Error(`Google sign-in failed: ${error.message}`);
+  } catch (error: unknown) {
+    const typedError = error as CustomError;
+    console.error("Error signing in with Google:", typedError.message);
+    throw new Error(`Google sign-in failed: ${typedError.message}`);
   }
 };
 
@@ -99,9 +105,10 @@ export const doSignInWithGoogle = async (): Promise<UserCredential> => {
 export const doSignOut = async (): Promise<void> => {
   try {
     await auth.signOut();
-  } catch (error: any) {
-    console.error("Error signing out:", error.message);
-    throw new Error(`Sign-out failed: ${error.message}`);
+  } catch (error: unknown) {
+    const typedError = error as CustomError;
+    console.error("Error signing out:", typedError.message);
+    throw new Error(`Sign-out failed: ${typedError.message}`);
   }
 };
 
@@ -109,9 +116,10 @@ export const doSignOut = async (): Promise<void> => {
 export const doPasswordReset = async (email: string): Promise<void> => {
   try {
     await sendPasswordResetEmail(auth, email);
-  } catch (error: any) {
-    console.error("Error sending password reset email:", error.message);
-    throw new Error(`Password reset failed: ${error.message}`);
+  } catch (error: unknown) {
+    const typedError = error as CustomError;
+    console.error("Error sending password reset email:", typedError.message);
+    throw new Error(`Password reset failed: ${typedError.message}`);
   }
 };
 
@@ -120,9 +128,10 @@ export const doSendEmailVerification = async (): Promise<void> => {
   if (auth.currentUser) {
     try {
       await sendEmailVerification(auth.currentUser);
-    } catch (error: any) {
-      console.error("Error sending verification email:", error.message);
-      throw new Error(`Email verification failed: ${error.message}`);
+    } catch (error: unknown) {
+      const typedError = error as CustomError;
+      console.error("Error sending verification email:", typedError.message);
+      throw new Error(`Email verification failed: ${typedError.message}`);
     }
   } else {
     console.error("No current user for verification.");
@@ -130,7 +139,7 @@ export const doSendEmailVerification = async (): Promise<void> => {
   }
 };
 
-// delete the user from database
+// Delete the user from database
 export const deleteUserAccount = async (): Promise<void> => {
   try {
     const currentUser = auth.currentUser;
@@ -139,11 +148,11 @@ export const deleteUserAccount = async (): Promise<void> => {
     }
 
     await deleteDoc(doc(db, 'users', currentUser.uid));
-
     await firebaseDeleteUser(currentUser);
     
-  } catch (error: any) {
-    console.error("Error deleting user:", error);
-    throw new Error(`Failed to delete account: ${error.message}`);
+  } catch (error: unknown) {
+    const typedError = error as CustomError;
+    console.error("Error deleting user:", typedError.message);
+    throw new Error(`Failed to delete account: ${typedError.message}`);
   }
 };

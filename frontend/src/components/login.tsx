@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   doSignInWithEmailAndPassword,
@@ -14,14 +14,14 @@ const Login = () => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
   };
 
-  const handleEmailLogin = async (e) => {
+  const handleEmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
@@ -29,9 +29,14 @@ const Login = () => {
     try {
       await doSignInWithEmailAndPassword(formData.email, formData.password);
       navigate("/profile");
-    } catch (error) {
-      setError(error.message || "Failed to sign in");
-      console.error("Login error:", error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message || "Failed to sign in");
+        console.error("Login error:", error);
+      } else {
+        setError("An unknown error occurred.");
+        console.error("Unknown error:", error);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -44,9 +49,14 @@ const Login = () => {
     try {
       await doSignInWithGoogle();
       navigate("/profile");
-    } catch (error) {
-      setError(error.message || "Failed to sign in with Google");
-      console.error("Google login error:", error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message || "Failed to sign in with Google");
+        console.error("Google login error:", error);
+      } else {
+        setError("An unknown error occurred.");
+        console.error("Unknown error:", error);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -140,7 +150,7 @@ const styles = {
   heading: {
     fontSize: "1.8rem",
     fontWeight: "bold",
-    textAlign: "center",
+    textAlign: "center" as const, 
     color: "var(--primary-color)",
     marginBottom: "20px",
   },
@@ -148,7 +158,7 @@ const styles = {
     color: "var(--highlight-color)",
     fontSize: "0.9rem",
     marginBottom: "15px",
-    textAlign: "center",
+    textAlign: "center" as const, 
   },
   formGroup: {
     marginBottom: "20px",
@@ -172,7 +182,7 @@ const styles = {
   },
   buttonGroup: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column" as const, 
     gap: "15px",
     marginTop: "20px",
   },
@@ -186,9 +196,6 @@ const styles = {
     cursor: "pointer",
     transition: "background 0.3s",
   },
-  primaryButtonHover: {
-    backgroundColor: "var(--highlight-color)",
-  },
   googleButton: {
     padding: "12px",
     backgroundColor: "var(--secondary-color)",
@@ -201,7 +208,7 @@ const styles = {
   },
   textCenter: {
     marginTop: "25px",
-    textAlign: "center",
+    textAlign: "center" as const,
   },
   textSm: {
     fontSize: "0.9rem",
