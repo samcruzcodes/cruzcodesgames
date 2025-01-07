@@ -11,12 +11,18 @@ importers:
       '@types/dotenv':
         specifier: ^8.2.3
         version: 8.2.3
+      '@vercel/analytics':
+        specifier: ^1.4.1
+        version: 1.4.1(react@18.2.0)
       dotenv:
         specifier: ^16.4.6
         version: 16.4.6
       firebase:
         specifier: ^9.17.2
         version: 9.17.2
+      flag:
+        specifier: ^5.0.1
+        version: 5.0.1(react@18.2.0)
       path-browserify:
         specifier: ^1.0.1
         version: 1.0.1
@@ -1328,6 +1334,32 @@ packages:
     resolution: {integrity: sha512-cvJ63l8c0yXdeT5POHpL0Q1cZoRcmRKFCtSjNGJxPkcP571EfZMcNbzWAc7oK3D1dRzm/V5EwtkANTZxqvuuUA==}
     engines: {node: ^16.0.0 || >=18.0.0}
 
+  '@vercel/analytics@1.4.1':
+    resolution: {integrity: sha512-ekpL4ReX2TH3LnrRZTUKjHHNpNy9S1I7QmS+g/RQXoSUQ8ienzosuX7T9djZ/s8zPhBx1mpHP/Rw5875N+zQIQ==}
+    peerDependencies:
+      '@remix-run/react': ^2
+      '@sveltejs/kit': ^1 || ^2
+      next: '>= 13'
+      react: ^18 || ^19 || ^19.0.0-rc
+      svelte: '>= 4'
+      vue: ^3
+      vue-router: ^4
+    peerDependenciesMeta:
+      '@remix-run/react':
+        optional: true
+      '@sveltejs/kit':
+        optional: true
+      next:
+        optional: true
+      react:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
+      vue-router:
+        optional: true
+
   '@vitejs/plugin-react-swc@3.3.2':
     resolution: {integrity: sha512-VJFWY5sfoZerQRvJrh518h3AcQt6f/yTuWn4/TRB+dqmYU0NX1qz7qM5Wfd+gOQqUzQW4gxKqKN3KpE/P3+zrA==}
     peerDependencies:
@@ -1401,6 +1433,9 @@ packages:
   arrify@2.0.1:
     resolution: {integrity: sha512-3duEwti880xqi4eAMN8AyR4a0ByT90zoYdLlevfrvU43vb0YZwZVfxOgxWrLXXXpyugL0hNZc9G6BiB5B3nUug==}
     engines: {node: '>=8'}
+
+  async-ref@0.1.6:
+    resolution: {integrity: sha512-gIvfC7ahv452pM+nwnxZJd/vhUh8UFMrd1DCvIvWjoy9WrRmYroXTTDxwg91oiD+4CqQKrg+11uCxZrzat4UvQ==}
 
   async-retry@1.3.3:
     resolution: {integrity: sha512-wfr/jstw9xNi/0teMHrRW7dsz3Lt5ARhYNZ2ewpadnhaIp5mbALhOAP+EAdsC7t4Z6wqsDVv9+W6gm1Dk9mEyw==}
@@ -1839,6 +1874,11 @@ packages:
 
   firebase@9.17.2:
     resolution: {integrity: sha512-2V95/evwB3zsi6RYHCvPXfkiQrSepFQJohv3YGoQVhS0bvXuYXmkLtrCVGShxneB/5t9HE5C9q9C8XPnK4APBw==}
+
+  flag@5.0.1:
+    resolution: {integrity: sha512-4P/rvPGKcFBneboyYHMOKbKaJL5ZhNjScbY7bGToas7FgBvrTWbh76yxRaoSoFe3HSjWc6IJ0EajUwSadcP6Lg==}
+    peerDependencies:
+      react: ^18
 
   flat-cache@3.1.1:
     resolution: {integrity: sha512-/qM2b3LUIaIgviBQovTLvijfyOQXPtSRnRK26ksj2J7rzPIecePUIpJsZ4T02Qg+xiAEKIs5K8dsHEd+VaKa/Q==}
@@ -4514,6 +4554,10 @@ snapshots:
       '@typescript-eslint/types': 6.0.0
       eslint-visitor-keys: 3.4.3
 
+  '@vercel/analytics@1.4.1(react@18.2.0)':
+    optionalDependencies:
+      react: 18.2.0
+
   '@vitejs/plugin-react-swc@3.3.2(vite@4.4.5(@types/node@20.8.9))':
     dependencies:
       '@swc/core': 1.3.95
@@ -4584,6 +4628,8 @@ snapshots:
 
   arrify@2.0.1:
     optional: true
+
+  async-ref@0.1.6: {}
 
   async-retry@1.3.3:
     dependencies:
@@ -5153,6 +5199,12 @@ snapshots:
       '@firebase/util': 1.9.3
     transitivePeerDependencies:
       - encoding
+
+  flag@5.0.1(react@18.2.0):
+    dependencies:
+      '@types/react': 18.2.15
+      async-ref: 0.1.6
+      react: 18.2.0
 
   flat-cache@3.1.1:
     dependencies:

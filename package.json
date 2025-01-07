@@ -15,8 +15,10 @@
     "name": "full-stack",
     "dependencies": {
         "@types/dotenv": "^8.2.3",
+        "@vercel/analytics": "^1.4.1",
         "dotenv": "^16.4.6",
         "firebase": "^9.17.2",
+        "flag": "^5.0.1",
         "path-browserify": "^1.0.1"
     }
 }
