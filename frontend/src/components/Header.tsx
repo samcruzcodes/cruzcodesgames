@@ -41,9 +41,10 @@ export default function Header() {
 
 const styles = {
   header: {
-    position: "top", 
     top: 0,
-    padding: "0 2rem",
+    left:0,
+    right:0,
+    padding: "0 4rem",
     backgroundColor: "var(--background-primary-mix)",
     borderBottom: "2px solid var(--subtle-accent)",
     zIndex: 100,
@@ -63,8 +64,8 @@ const styles = {
   },
   logo: {
     objectFit: "cover" as const,
-    height: "3rem",
-    width: "3rem",
+    height: "2.5rem",
+    width: "2.5rem",
   },
   links: {
     display: "flex",
