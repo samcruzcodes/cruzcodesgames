@@ -1,0 +1,42 @@
+
+.gamePage {
+  text-align: center;
+}
+
+.title {
+  color: var(--primary-color);
+  font-size: 2rem;
+  margin-bottom: 2rem; }
+
+.gameDetails {
+  margin-top: 5rem; 
+  color: var(--text-color);
+  text-align: left;
+  padding: 10px 20px;
+}
+
+.commentsSection {
+  margin-top: 20px;
+  padding: 10px;
+  border-top: 1px solid var(--subtle-accent);
+}
+
+iframe {
+  transform: scale(0.7) translateX(0); 
+  transition: transform 0.3s ease, margin 0.3s ease;
+  margin: 20px;
+}
+
+@media (max-width: 700px) {
+  iframe {
+    transform: scale(0.5) translateX(-15rem); 
+  }
+}
+
+/* Like Icon */
+.heart {
+  width: 1.5rem;
+  height: 1.5rem;
+  padding-top: 0.1rem;
+  transition: color 0.3s ease;
+}

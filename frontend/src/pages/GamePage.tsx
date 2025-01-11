@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { getGames } from '../../../lib/gamesData';
 import { Game } from '../../../lib/types';
 import { IconHeartFilled } from '@tabler/icons-react';
+import './GamePage.css'; 
 
 const GamePage = () => {
   const { id } = useParams();
@@ -64,74 +65,41 @@ const GamePage = () => {
   }
 
   if (error || !game) {
-    return <div style={styles.gamePage}>{error || 'Game not found!'}</div>;
+    return <div className="gamePage">{error || 'Game not found!'}</div>;
   }
 
   return (
-    <div style={styles.gamePage}>
-      <h1 style={styles.title}>{game.title}</h1>
+    <div className="gamePage">
+      <h1 className="title">{game.title}</h1>
       <iframe
         src={game.itchIoUrl}
         width={game.width}
         height={game.height}
-        style={{ ...styles.gameContainer, margin: game.margin || '20px' }}
+        className="gameContainer"
       />
-      <div style={styles.gameDetails}>
+      <div className="gameDetails">
         <p><strong>Description:</strong> {game.description}</p>
         <p>
           <strong>Views:</strong> {game.views}
           <br />
           <span
-            style={{ display: 'inline-flex', alignItems: 'center', cursor: 'pointer' }}
+            className="likeButton"
             onClick={handleLike}
           >
             <IconHeartFilled
-              style={{
-                ...styles.heart,
-                color: hasLiked ? 'darkred' : 'white',
-              }}
+              className="heart"
+              style={{ color: hasLiked ? 'darkred' : 'white' }}
             />
             <span style={{ marginLeft: '0.5rem' }}>{likes}</span>
           </span>
         </p>
-        <div style={styles.commentsSection}>
+        <div className="commentsSection">
           <h3>Comments</h3>
           <p>No comments yet. Be the first to comment!</p>
         </div>
-        </div>
+      </div>
     </div>
   );
-};
-
-const styles = {
-  gamePage: {
-    textAlign: 'center' as const,
-  },
-  title: {
-    color: 'var(--primary-color)',
-    fontSize: '2rem',
-    marginBottom: '20px',
-  },
-  gameDetails: {
-    marginTop: '2rem',
-    color: 'var(--text-color)',
-    textAlign: 'left' as const,
-    padding: '10px 20px',
-  },
-  commentsSection: {
-    marginTop: '20px',
-    padding: '10px',
-    borderTop: '1px solid var(--subtle-accent)',
-  },
-  gameContainer: {
-    transform: 'scale(0.7)',
-  },
-  heart: {
-    width: '1.5rem',
-    height: '1.5rem',
-    paddingTop: '.1rem',
-    transition: 'color 0.3s ease',
-  },
 };
 
 export default GamePage;
