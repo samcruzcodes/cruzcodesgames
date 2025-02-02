@@ -9,7 +9,6 @@ import EditProfile from "./components/editProfile";
 import Login from "./components/login";
 import SignUp from "./components/signup";
 import "./index.css";
-import { Analytics } from "@vercel/analytics/react"
 
 function AppLayout() {
   return (
@@ -18,7 +17,6 @@ function AppLayout() {
       <Outlet />
     </div>
   );
-  <Analytics/>
 }
 
 const router = createBrowserRouter([
