@@ -33,8 +33,6 @@
 # turbo
 **/.turbo
 
-# vercel
-**/.vercel
 
 # flyctl launch added from frontend/.gitignore
 # Logs

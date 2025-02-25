@@ -32,7 +32,7 @@ Firebase for user authentication and data storage.
 Database
 Firebase for real-time updates and reliable storage.
 Deployment
-Hosted on Vercel or Firebase Hosting for easy accessibility.
+Hosted on Fly.io.
 
 # License
 This project is licensed under the MIT License. See the LICENSE file for more details.

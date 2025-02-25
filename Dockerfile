@@ -1,33 +1,36 @@
-# Use Nginx base image
-FROM nginx:stable-alpine
-
-# Install Node 20
-RUN apk add --update nodejs npm
+# Use the official Node.js image as a base for the build stage
+FROM node:20-alpine AS builder
 
 # Install pnpm
 RUN npm install -g pnpm
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
 
-# Set the working directory in the builder
+# Set the working directory
 WORKDIR /app
 
-# Copy the entire monorepo and install dependencies and build
+# Copy the application files into the container
 COPY . .
-RUN rm -rf node_modules **/node_modules
+
+# Install dependencies using pnpm
 RUN pnpm install
+
+# Build your frontend (adjust this if your build command is different)
 RUN pnpm run build
 
-# Copy necessary build outputs and dependencies to nginx
-RUN cp -r ./frontend/dist/* /usr/share/nginx/html/
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Use an Nginx server to serve the built app
+FROM nginx:stable-alpine
 
-# Expose the port Nginx is running on
-EXPOSE 80
-EXPOSE 443
+# Install Node.js in the Nginx stage
+RUN apk add --no-cache nodejs npm
 
-# Install PM2
-RUN npm install -g pm2
+# Copy the build files from the builder stage to Nginx public directory
+COPY --from=builder /app/frontend/dist /usr/share/nginx/html
 
-# Use the start script as the entrypoint
-ENTRYPOINT ["./start.sh"]
+# Copy the start script into the image
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Expose the necessary ports
+EXPOSE 80 443
+
+# Run the start script
+CMD ["/start.sh"]
